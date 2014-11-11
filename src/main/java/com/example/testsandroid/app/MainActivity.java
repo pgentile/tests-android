@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +20,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
@@ -49,8 +50,8 @@ public class MainActivity extends Activity {
             }
         });
 
-        final Button button = (Button) findViewById(R.id.openCameraButton);
-        button.setOnClickListener(new View.OnClickListener() {
+        final Button openCameraButton = (Button) findViewById(R.id.openCameraButton);
+        openCameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -61,6 +62,22 @@ public class MainActivity extends Activity {
         });
 
         photoView = (ImageView) findViewById(R.id.photo);
+
+        final Button notifButton = (Button) findViewById(R.id.notifButton);
+        notifButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(LOG_TAG, "Envoi d'une notification");
+
+                Notification notif = new Notification.Builder(view.getContext())
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setContentTitle("Notif...")
+                        .setContentText("Contenu de la notif")
+                        .build();
+                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(NOTIF_ID, notif);
+            }
+        });
     }
 
     @Override
@@ -89,13 +106,6 @@ public class MainActivity extends Activity {
         super.onStart();
 
         Log.i(LOG_TAG, "Start");
-
-        Notification notif = new NotificationCompat.Builder(this)
-                .setContentTitle("Notif...")
-                .setContentText("Contenu de la notif")
-                .getNotification();
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIF_ID, notif);
     }
 
     @Override
@@ -114,8 +124,6 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        //super.onRestoreInstanceState(savedInstanceState);
-
         Log.i(LOG_TAG, "Restauration etat instance");
 
         ratingBar.setRating(savedInstanceState.getFloat("note"));
@@ -123,8 +131,6 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        // super.onSaveInstanceState(outState);
-
         Log.i(LOG_TAG, "Sauvegarde etat instance");
 
         outState.putFloat("note", ratingBar.getRating());
