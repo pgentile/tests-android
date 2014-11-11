@@ -78,6 +78,15 @@ public class MainActivity extends ActionBarActivity {
                 notificationManager.notify(NOTIF_ID, notif);
             }
         });
+
+        final Button showCardButton = (Button) findViewById(R.id.showCardButton);
+        showCardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), CardActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
