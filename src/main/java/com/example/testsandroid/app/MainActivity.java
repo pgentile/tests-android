@@ -1,6 +1,5 @@
 package com.example.testsandroid.app;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -8,7 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.NotificationCompat;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -69,12 +68,12 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view) {
                 Log.i(LOG_TAG, "Envoi d'une notification");
 
-                Notification notif = new Notification.Builder(view.getContext())
+                final Notification notif = new Notification.Builder(view.getContext())
                         .setSmallIcon(R.drawable.ic_launcher)
                         .setContentTitle("Notif...")
                         .setContentText("Contenu de la notif")
                         .build();
-                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                final NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.notify(NOTIF_ID, notif);
             }
         });
@@ -83,7 +82,7 @@ public class MainActivity extends ActionBarActivity {
         showCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), CardActivity.class);
+                final Intent intent = new Intent(view.getContext(), CardActivity.class);
                 startActivity(intent);
             }
         });
@@ -132,7 +131,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         Log.i(LOG_TAG, "Restauration etat instance");
 
         ratingBar.setRating(savedInstanceState.getFloat("note"));
