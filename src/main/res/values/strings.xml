@@ -4,5 +4,7 @@
     <string name="app_name">Tests Android</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_card">Cartes</string>
+    <string name="open_drawer">Ouvrir le menu</string>
+    <string name="close_drawer">Fermer le menu</string>
 
 </resources>

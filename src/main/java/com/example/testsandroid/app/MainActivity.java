@@ -8,8 +8,13 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,9 +32,13 @@ public class MainActivity extends ActionBarActivity {
 
     private static final int NOTIF_ID = 1;
 
+    private Toolbar toolbar;
+
     private RatingBar ratingBar;
 
     private ImageView photoView;
+
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +47,13 @@ public class MainActivity extends ActionBarActivity {
         Log.i(LOG_TAG, "Creation");
 
         setContentView(R.layout.activity_main);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         final TextView aboutText = (TextView) findViewById(R.id.aboutRating);
@@ -68,7 +84,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view) {
                 Log.i(LOG_TAG, "Envoi d'une notification");
 
-                final Notification notif = new Notification.Builder(view.getContext())
+                final Notification notif = new NotificationCompat.Builder(view.getContext())
                         .setSmallIcon(R.drawable.ic_launcher)
                         .setContentTitle("Notif...")
                         .setContentText("Contenu de la notif")
@@ -86,6 +102,13 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        toolbar.setNavigationIcon(R.drawable.ic_launcher);
     }
 
     @Override
@@ -157,22 +180,18 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        final int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(Gravity.START);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
 }
