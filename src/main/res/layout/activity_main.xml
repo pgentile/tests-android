@@ -44,45 +44,45 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/aboutRating"
-                        android:text="Sélectionnez une note"
+                        android:text="@string/rate"
                         android:layout_gravity="center"/>
             </TableRow>
             <TableRow
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
                 <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ouvrir l&apos;appareil photo"
+                        android:text="@string/open_camera"
                         android:id="@+id/openCameraButton"/>
             </TableRow>
             <TableRow
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
                 <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Notifier"
+                        android:text="@string/notify"
                         android:id="@+id/notifButton"/>
             </TableRow>
             <TableRow
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
                 <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Afficher les cartes"
+                        android:text="@string/show_cards"
                         android:id="@+id/showCardButton"/>
             </TableRow>
             <TableRow
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
                 <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/photo"
                         android:minHeight="200dp"
-                        android:contentDescription="Preview de la photo"/>
+                        android:contentDescription="@string/photo_preview"/>
             </TableRow>
         </TableLayout>
 

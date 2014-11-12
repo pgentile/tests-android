@@ -16,7 +16,7 @@
 
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
@@ -27,13 +27,14 @@
             <android.support.v7.widget.CardView
                     android:id="@+id/card_view_1"
                     android:layout_gravity="center"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="200dp"
                     auto:cardCornerRadius="4dp">
 
                 <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" android:text="Salut, toi !"/>
+                        android:layout_height="match_parent"
+                        android:text="@string/hello_you"/>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -45,7 +46,8 @@
 
                 <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" android:text="Tu vas bien ?"/>
+                        android:layout_height="match_parent"
+                        android:text="@string/how_are_you"/>
             </android.support.v7.widget.CardView>
 
         </LinearLayout>
