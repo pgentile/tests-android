@@ -29,7 +29,7 @@
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    auto:cardCornerRadius="4dp">
+                    auto:cardElevation="2dp">
 
                 <TextView
                         android:layout_width="match_parent"
@@ -41,8 +41,7 @@
                     android:id="@+id/card_view_2"
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    auto:cardCornerRadius="4dp">
+                    android:layout_height="100dp">
 
                 <TextView
                         android:layout_width="match_parent"

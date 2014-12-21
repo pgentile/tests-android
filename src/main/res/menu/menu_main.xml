@@ -3,9 +3,9 @@
       xmlns:auto="http://schemas.android.com/apk/res-auto"
       tools:context=".MainActivity">
     <item android:id="@+id/test_button"
+          android:icon="@drawable/ic_launcher"
           android:title="@string/test"
           auto:showAsAction="ifRoom"/>
     <item android:id="@+id/action_settings"
-          android:title="@string/action_settings"
-          android:orderInCategory="100"/>
+          android:title="@string/action_settings"/>
 </menu>
