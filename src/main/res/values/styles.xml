@@ -13,8 +13,17 @@
         <item name="colorAccent">@color/accent_color</item>
     </style>
 
+    <style name="AppTheme.Toolbar" parent="AppTheme">
+        <item name="android:textColorPrimary">#FFF</item>
+        <item name="android:textColorSecondary">#FFF</item>
+    </style>
+
+    <style name="AppTheme.Toolbar.Popup" parent="Theme.AppCompat.Light"></style>
+
     <color name="primary_color">#3F51B5</color>
     <color name="primary_darker_color">#1A237E</color>
     <color name="accent_color">#5C6BC0</color>
+
+    <color name="selected">#F00</color>
 
 </resources>

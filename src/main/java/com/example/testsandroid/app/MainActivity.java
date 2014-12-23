@@ -92,6 +92,12 @@ public class MainActivity extends ActionBarActivity {
                         startActivity(intent);
 
                         break;
+                    case R.id.show_list_view:
+
+                        Intent intent2 = new Intent(MainActivity.this, ListActivity.class);
+                        startActivity(intent2);
+
+                        break;
                     default:
                         Log.w(LOG_TAG, "Menu - Action non reconnue");
                 }

@@ -23,7 +23,6 @@ public class CardActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 NavUtils.navigateUpFromSameTask(CardActivity.this);
-
             }
         });
     }

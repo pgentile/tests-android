@@ -15,5 +15,8 @@
     <string name="vibrate">Vibrer</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_settings">Préférences</string>
+    <string name="title_activity_list">Liste</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="vue_liste">Vue liste</string>
 
 </resources>

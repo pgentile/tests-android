@@ -6,6 +6,8 @@
           android:icon="@drawable/ic_launcher"
           android:title="@string/test"
           auto:showAsAction="ifRoom"/>
+    <item android:id="@+id/show_list_view"
+          android:title="@string/vue_liste"/>
     <item android:id="@+id/action_settings"
           android:title="@string/action_settings"/>
 </menu>
