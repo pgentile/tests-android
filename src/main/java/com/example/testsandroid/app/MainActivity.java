@@ -6,13 +6,9 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -22,19 +18,18 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
 import de.greenrobot.event.EventBus;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
 import java.util.concurrent.TimeUnit;
 
 
@@ -88,13 +83,13 @@ public class MainActivity extends ActionBarActivity {
                         Log.i(LOG_TAG, "Menu - Settings");
                         Toast.makeText(getApplicationContext(), "Menu sélectionné : Settings", Toast.LENGTH_LONG).show();
 
-                        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                        final Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
                         startActivity(intent);
 
                         break;
                     case R.id.show_list_view:
 
-                        Intent intent2 = new Intent(MainActivity.this, ListActivity.class);
+                        final Intent intent2 = new Intent(getApplicationContext(), ListActivity.class);
                         startActivity(intent2);
 
                         break;
@@ -139,13 +134,13 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View view) {
                 Log.i(LOG_TAG, "Envoi d'une notification");
 
-                Intent notifIntent = new Intent(MainActivity.this, MainActivity.class);
+                final Intent notifIntent = new Intent(MainActivity.this, MainActivity.class);
 
-                TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(MainActivity.this)
+                final TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(MainActivity.this)
                         .addParentStack(MainActivity.this)
                         .addNextIntent(notifIntent);
 
-                PendingIntent contentIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                final PendingIntent contentIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 final Notification notif = new NotificationCompat.Builder(view.getContext())
                         .setSmallIcon(R.drawable.ic_launcher)
@@ -176,17 +171,13 @@ public class MainActivity extends ActionBarActivity {
 
             @Override
             public void onClick(View view) {
-                Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 if (vibrator.hasVibrator()) {
                     vibrator.vibrate(TimeUnit.SECONDS.toMillis(1));
                 }
             }
 
         });
-
-        if (savedInstanceState != null) {
-            onRestoreInstanceState(savedInstanceState);
-        }
     }
 
     @Override
@@ -247,7 +238,7 @@ public class MainActivity extends ActionBarActivity {
 
          try {
              try (FileInputStream photoOutputStream = openFileInput("photo.png")) {
-                 Bitmap photoBitmap = BitmapFactory.decodeStream(photoOutputStream);
+                 final Bitmap photoBitmap = BitmapFactory.decodeStream(photoOutputStream);
                  if (photoBitmap == null) {
                      Log.e(LOG_TAG, "Impossible de décoder la photo sauvegardée");
                  }
@@ -256,7 +247,7 @@ public class MainActivity extends ActionBarActivity {
                  }
              }
 
-         } catch (IOException e) {
+         } catch (final IOException e) {
              Log.i(LOG_TAG, "Restauration impossible : " + e.getMessage(), e);
          }
      }
@@ -288,7 +279,7 @@ public class MainActivity extends ActionBarActivity {
                     Log.e(LOG_TAG, "Sauvegarde au format PNG impossible");
                 }
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Log.e(LOG_TAG, "Sauvegarde impossible : " + e.getMessage(), e);
         }
     }
