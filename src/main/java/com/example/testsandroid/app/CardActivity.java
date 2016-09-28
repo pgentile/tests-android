@@ -1,12 +1,12 @@
 package com.example.testsandroid.app;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 
-public class CardActivity extends ActionBarActivity {
+public class CardActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +16,7 @@ public class CardActivity extends ActionBarActivity {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Cartes");
         toolbar.setSubtitle("Quelques cartes");
-        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        toolbar.setNavigationIcon(android.R.drawable.ic_dialog_map);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

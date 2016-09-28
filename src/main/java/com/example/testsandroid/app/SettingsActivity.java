@@ -19,7 +19,7 @@ public class SettingsActivity extends ActionBarActivity {
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Settings");
-        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        toolbar.setNavigationIcon(R.drawable.ic_launcher);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

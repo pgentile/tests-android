@@ -13,11 +13,11 @@ import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -25,7 +25,10 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import de.greenrobot.event.EventBus;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -33,7 +36,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
@@ -67,7 +70,7 @@ public class MainActivity extends ActionBarActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                drawerLayout.openDrawer(Gravity.START);
+                drawerLayout.openDrawer(GravityCompat.START);
             }
         });
 
@@ -230,34 +233,33 @@ public class MainActivity extends ActionBarActivity {
         Log.i(LOG_TAG, "On new Intent");
     }
 
-     @Override
-     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-         Log.i(LOG_TAG, "Restauration etat instance");
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        Log.i(LOG_TAG, "Restauration etat instance");
 
-         ratingBar.setRating(savedInstanceState.getFloat("note"));
+        ratingBar.setRating(savedInstanceState.getFloat("note"));
 
-         try {
-             try (FileInputStream photoOutputStream = openFileInput("photo.png")) {
-                 final Bitmap photoBitmap = BitmapFactory.decodeStream(photoOutputStream);
-                 if (photoBitmap == null) {
-                     Log.e(LOG_TAG, "Impossible de décoder la photo sauvegardée");
-                 }
-                 else {
-                     photoView.setImageBitmap(photoBitmap);
-                 }
-             }
+        try {
+            try (FileInputStream photoOutputStream = openFileInput("photo.png")) {
+                final Bitmap photoBitmap = BitmapFactory.decodeStream(photoOutputStream);
+                if (photoBitmap == null) {
+                    Log.e(LOG_TAG, "Impossible de décoder la photo sauvegardée");
+                } else {
+                    photoView.setImageBitmap(photoBitmap);
+                }
+            }
 
-         } catch (final IOException e) {
-             Log.i(LOG_TAG, "Restauration impossible : " + e.getMessage(), e);
-         }
-     }
+        } catch (final IOException e) {
+            Log.i(LOG_TAG, "Restauration impossible : " + e.getMessage(), e);
+        }
+    }
 
-     @Override
-     protected void onSaveInstanceState(Bundle outState) {
-         Log.i(LOG_TAG, "Sauvegarde etat instance");
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.i(LOG_TAG, "Sauvegarde etat instance");
 
-         outState.putFloat("note", ratingBar.getRating());
-     }
+        outState.putFloat("note", ratingBar.getRating());
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -269,7 +271,8 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void onEventBackgroundThread(PhotoCapturedEvent event) {
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onPhotoCaptured(PhotoCapturedEvent event) {
         try {
             final Bitmap photoBitmap = event.getPhotoBitmap();
             try (FileOutputStream photoOutputStream = openFileOutput("photo.png", Context.MODE_PRIVATE)) {
@@ -284,7 +287,8 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void onEventMainThread(PhotoSavedEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPhotoSaved(PhotoSavedEvent event) {
         photoView.setImageBitmap(event.getPhotoBitmap());
     }
 

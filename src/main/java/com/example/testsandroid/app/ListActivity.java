@@ -1,7 +1,7 @@
 package com.example.testsandroid.app;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ActionMode;
@@ -16,7 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
-public class ListActivity extends ActionBarActivity {
+public class ListActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = ListActivity.class.getSimpleName();
 
@@ -33,9 +33,9 @@ public class ListActivity extends ActionBarActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Liste");
-        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        toolbar.setNavigationIcon(R.drawable.ic_launcher);
 
-        // setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
