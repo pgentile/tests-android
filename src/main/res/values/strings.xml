@@ -19,4 +19,10 @@
     <string name="hello_world">Hello world!</string>
     <string name="vue_liste">Vue liste</string>
 
+    <string name="notif_title">Notif…</string>
+    <string name="notif_text">Contenu de la notification</string>
+
+    <string name="action_default_text">Texte par défaut</string>
+    <string name="action_chooser_title">Envoyer ce texte avec…</string>
+
 </resources>

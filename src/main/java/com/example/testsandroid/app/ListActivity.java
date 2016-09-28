@@ -58,7 +58,7 @@ public class ListActivity extends AppCompatActivity {
                 final TextView titleView = (TextView) convertView.findViewById(R.id.title);
                 titleView.setText(content);
 
-                return  titleView;
+                return titleView;
             }
 
         };

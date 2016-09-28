@@ -12,14 +12,13 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -35,6 +34,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,142 +47,157 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int NOTIF_ID = 1;
 
+    @BindView(R.id.photo)
+    ImageView photoView;
+
+    @BindView(R.id.ratingBar)
+    RatingBar ratingBar;
+
+    @BindView(R.id.openCameraButton)
+    Button openCameraButton;
+
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.aboutRating)
+    TextView aboutText;
+
+    @BindView(R.id.notifButton)
+    Button notifButton;
+
+    @BindView(R.id.showCardButton)
+    Button showCardButton;
+
+    @BindView(R.id.vibrateButton)
+    Button vibrateButton;
+
+    @BindView(R.id.fab)
+    FloatingActionButton floatingActionButton;
+
+    @BindString(R.string.notif_title)
+    String notificationTitle;
+
+    @BindString(R.string.notif_text)
+    String notificationText;
+
+    @BindString(R.string.action_default_text)
+    String actionDefaultText;
+
+    @BindString(R.string.action_chooser_title)
+    String actionChooserTitle;
+
     private final EventBus eventBus = EventBus.getDefault();
-
-    private ImageView photoView;
-
-    private RatingBar ratingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(LOG_TAG, "Creation");
+
         super.onCreate(savedInstanceState);
 
         eventBus.register(this);
 
-        Log.i(LOG_TAG, "Creation");
-
         setContentView(R.layout.activity_main);
 
-        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ButterKnife.bind(this);
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //toolbar.setTitle("Accueil");
         //toolbar.setSubtitle("Accueil de l'appli");
         toolbar.setNavigationIcon(R.drawable.ic_launcher);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                drawerLayout.openDrawer(GravityCompat.START);
+        toolbar.setNavigationOnClickListener(view -> drawerLayout.openDrawer(GravityCompat.START));
+
+        toolbar.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.test_button:
+                    Log.i(LOG_TAG, "Menu - Test");
+                    Toast.makeText(getApplicationContext(), "Menu sélectionné : Test", Toast.LENGTH_LONG).show();
+                    break;
+
+                case R.id.action_settings:
+                    Log.i(LOG_TAG, "Menu - Settings");
+                    Toast.makeText(getApplicationContext(), "Menu sélectionné : Settings", Toast.LENGTH_LONG).show();
+
+                    final Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                    startActivity(intent);
+                    break;
+
+                case R.id.show_list_view:
+
+                    final Intent intent2 = new Intent(getApplicationContext(), ListActivity.class);
+                    startActivity(intent2);
+                    break;
+
+                default:
+                    Log.w(LOG_TAG, "Menu - Action non reconnue");
+                    break;
             }
-        });
-
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.test_button:
-                        Log.i(LOG_TAG, "Menu - Test");
-                        Toast.makeText(getApplicationContext(), "Menu sélectionné : Test", Toast.LENGTH_LONG).show();
-                        break;
-                    case R.id.action_settings:
-                        Log.i(LOG_TAG, "Menu - Settings");
-                        Toast.makeText(getApplicationContext(), "Menu sélectionné : Settings", Toast.LENGTH_LONG).show();
-
-                        final Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                        startActivity(intent);
-
-                        break;
-                    case R.id.show_list_view:
-
-                        final Intent intent2 = new Intent(getApplicationContext(), ListActivity.class);
-                        startActivity(intent2);
-
-                        break;
-                    default:
-                        Log.w(LOG_TAG, "Menu - Action non reconnue");
-                }
-                return true;
-            }
+            return true;
         });
 
         toolbar.inflateMenu(R.menu.menu_main);
 
-        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
-        final TextView aboutText = (TextView) findViewById(R.id.aboutRating);
+        ratingBar.setOnRatingBarChangeListener((currentRatingBar, rating, fromUser) -> {
+            aboutText.setText("Note : " + rating + " / " + currentRatingBar.getNumStars());
+        });
 
-        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                aboutText.setText("Note : " + rating + " / " + ratingBar.getNumStars());
+        openCameraButton.setOnClickListener(currentView -> {
+            final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
             }
         });
 
-        final Button openCameraButton = (Button) findViewById(R.id.openCameraButton);
-        openCameraButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-                }
-            }
-        });
-
-        photoView = (ImageView) findViewById(R.id.photo);
         photoView.setDrawingCacheEnabled(true);
 
-        final Button notifButton = (Button) findViewById(R.id.notifButton);
-        notifButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i(LOG_TAG, "Envoi d'une notification");
+        notifButton.setOnClickListener(currentView -> {
+            Log.i(LOG_TAG, "Envoi d'une notification");
 
-                final Intent notifIntent = new Intent(MainActivity.this, MainActivity.class);
+            final Intent notifIntent = new Intent(MainActivity.this, MainActivity.class);
 
-                final TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(MainActivity.this)
-                        .addParentStack(MainActivity.this)
-                        .addNextIntent(notifIntent);
+            final TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(MainActivity.this)
+                    .addParentStack(MainActivity.this)
+                    .addNextIntent(notifIntent);
 
-                final PendingIntent contentIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            final PendingIntent contentIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                final Notification notif = new NotificationCompat.Builder(view.getContext())
-                        .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentTitle("Notif...")
-                        .setContentText("Contenu de la notif")
-                        .setContentIntent(contentIntent)
-                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                        .build();
-                final NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(NOTIF_ID, notif);
+            final Notification notif = new NotificationCompat.Builder(currentView.getContext())
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setContentTitle(notificationTitle)
+                    .setContentText(notificationText)
+                    .setContentIntent(contentIntent)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .build();
 
+            final NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.notify(NOTIF_ID, notif);
+        });
+
+        showCardButton.setOnClickListener(currentView -> {
+            final Intent intent = new Intent(currentView.getContext(), CardActivity.class);
+            startActivity(intent);
+        });
+
+        vibrateButton.setOnClickListener(currentView -> {
+            final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            if (vibrator.hasVibrator()) {
+                vibrator.vibrate(TimeUnit.SECONDS.toMillis(1));
             }
         });
 
-        final Button showCardButton = (Button) findViewById(R.id.showCardButton);
-        showCardButton.setOnClickListener(new View.OnClickListener() {
+        floatingActionButton.setOnClickListener(currentView -> {
+            final Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, actionDefaultText);
+            sendIntent.setType("text/plain");
 
-            @Override
-            public void onClick(View view) {
-                final Intent intent = new Intent(view.getContext(), CardActivity.class);
-                startActivity(intent);
+            final Intent chooser = Intent.createChooser(sendIntent, actionChooserTitle);
+            if (sendIntent.resolveActivity(getPackageManager()) != null) {
+                startActivity(chooser);
             }
-
-        });
-
-        final Button vibrateButton = (Button) findViewById(R.id.vibrateButton);
-        vibrateButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                if (vibrator.hasVibrator()) {
-                    vibrator.vibrate(TimeUnit.SECONDS.toMillis(1));
-                }
-            }
-
         });
     }
 
